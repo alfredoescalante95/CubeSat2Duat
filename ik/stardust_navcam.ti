@@ -1,0 +1,152 @@
+KPL/IK
+
+NAVCAM Instrument kernel
+===========================================================================
+
+
+Version and Date
+---------------------------------------------------------------------------
+
+
+
+References
+---------------------------------------------------------------------------
+
+
+
+Implementation Notes
+---------------------------------------------------------------------------
+
+   Applications that need SPICE I-kernel data must load the I-kernel
+   file, normally during program initialization.
+
+   Loading the kernel using the SPICELIB routine FURNSH causes the data
+   items and their associated values present in the kernel to become
+   associated with a data structure called the kernel pool. The
+   application program may then obtain the value(s) for any IK data
+   item using the SPICELIB routines GDPOOL, GIPOOL, GCPOOL. Routine
+   GETFOV may be used if the file contains instrument field-of-view
+   (FOV) specification. See [5] for details.
+
+   This file was created with, and can be updated with a text editor or
+   word processor.
+
+
+Conventions for Specifying Data
+---------------------------------------------------------------------------
+
+
+
+Overview
+---------------------------------------------------------------------------
+
+   
+
+
+Apparent FOV Layout
+---------------------------------------------------------------------------
+
+   This section provides a diagram illustrating the NAVCAM
+   apparent FOV layout in the corresponding reference frames.
+
+                                  ^ +Xcam
+                                  |    (+Xsc)
+                                  |
+       ---              +---------|---------+
+        ^               |         |         |
+        | 5 deg         |         |         |
+        |               |         |         |
+        |               |         |         |
+        |         1024  |         x-------------> +Ycam
+        |         lines |       +Zcam       |        (+Ysc)
+        |               |                   |
+        |               |                   |
+        V               |                   |
+       ---      Pixel (0,0)-----------------+
+                           1024 pixels/line
+
+                        |  5 deg            |      Boresight (+Z axis)
+                        |<----------------->|       is into the page
+                        |                   |
+
+   
+
+
+Optical Parameters
+---------------------------------------------------------------------------
+
+
+   The keywords below provide nominal data for both cameras. Angular size
+   values in the keywords are given in radians, with the Xcam size being
+   the first value and the Ycam size being the second value in each pair.
+
+      \begindata
+
+         INS-1955555_FOCAL_LENGTH       = ( 152.5                )
+         INS-1955555_F/RATIO_NA         = ( 2.2                  )
+         INS-1955555_F/RATIO_A          = ( 5.1                  )
+         INS-1955555_FOV_ANGULAR_SIZE   = (   0.087267, 0.087267 )
+         INS-1955555_IFOV               = (   0.0000852          )
+
+      \begintext
+
+
+CCD Parameters
+---------------------------------------------------------------------------
+
+      \begindata
+
+         INS-1955555_PIXEL_SIZE         = ( 13, 13 )
+         INS-1955555_PIXEL_SAMPLES      = ( 1024 )
+         INS-1955555_PIXEL_LINES        = ( 1024 )
+         INS-1955555_CCD_CENTER         = ( 511.5, 511.5 )
+
+      \begintext
+
+
+FOV Definitions
+---------------------------------------------------------------------------
+
+   This section contains definitions for the NAVCAM A and B FOVs.
+   These definitions are provided in the format required by the SPICE
+   (CSPICE) function GETFOV (getfov_c).
+
+NAVCAM-A FOV
+
+   The set of assignments in the data section below defines the NAVCAM-A/B
+   FOV with respect to the ROS_NAVCAM-A/B frame to be a rectangle with the
+   corners defined by the first and last pixels of the first and last
+   lines of the CCD and the boresight along the +Z axis of the
+   ROS_NAVCAM-A/B frame. This FOV definition uses angular extent style
+   specification with the angular sizes along the Xcam and Ycam axes taken
+   from the 'Optical Parameters' section above.
+
+      \begindata
+
+         INS-1955555_FOV_FRAME                 = 'STARDUST_NAVCAM'
+         INS-1955555_FOV_SHAPE                 = 'RECTANGLE'
+         INS-1955555_BORESIGHT                 = (0.0     0.0   152.5)
+         INS-1955555_FOV_CLASS_SPEC            = 'ANGLES'
+         INS-1955555_FOV_REF_VECTOR            = (1.0     0.0     0.0)
+         INS-1955555_FOV_REF_ANGLE             = ( 2.500 )
+         INS-1955555_FOV_CROSS_ANGLE           = ( 2.500 )
+         INS-1955555_FOV_ANGLE_UNITS           = 'DEGREES'
+
+      \begintext
+
+
+Platform ID
+---------------------------------------------------------------------------
+
+   This number is the NAIF instrument ID of the platform on which the
+   cameras are mounted. For both cameras this platform is the
+   spacecraft.
+
+      \begindata
+
+         INS-19555550_PLATFORM_ID  = ( -955555 )
+
+      \begintext
+
+
+End of IK file.
